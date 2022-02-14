@@ -1,6 +1,13 @@
 import './App.css'
-import { useEffect } from "react";
-import { connectWithWebSocket } from "./utils/wss-connection/wssConnection";
+import {
+    BrowserRouter,
+    Switch,
+    Route
+} from "react-router-dom";
+import { useEffect } from "react"
+import { connectWithWebSocket } from "./utils/wss-connection/wssConnection"
+import Dashboard from "./dashboard/Dashboard";
+import LoginPage from "./loginPage/LoginPage";
 
 function App() {
 
@@ -9,9 +16,12 @@ function App() {
     },[])
 
     return (
-        <div className="App">
-            App
-        </div>
+        <BrowserRouter>
+            <Switch>
+                <Route path='/dashboard' component={Dashboard} />
+                <Route path='/' component={LoginPage} />
+            </Switch>
+        </BrowserRouter>
     )
 }
 
