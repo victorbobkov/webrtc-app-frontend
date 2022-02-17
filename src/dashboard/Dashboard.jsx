@@ -1,7 +1,7 @@
 import React from 'react'
 import logo from '../resources/logo.png'
 import './Dashboard.css'
-import ActiveUsersList from "./ActiveUsersList";
+import ActiveUsersList from './ActiveUsersList'
 
 const Dashboard = () => {
     return (

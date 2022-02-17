@@ -1,27 +1,9 @@
 import React from 'react'
-import ActiveUsersListItem from "./ActiveUsersListItem"
+import ActiveUsersListItem from './ActiveUsersListItem'
 import './ActiveUsersList.css'
+import { connect } from "react-redux"
 
-const activeUsers = [
-    {
-        socketId: 322,
-        username: 'Valera'
-    },
-    {
-        socketId: 333,
-        username: 'Volodya'
-    },
-    {
-        socketId: 423,
-        username: 'Vasyan'
-    },
-    {
-        socketId: 354,
-        username: 'Valeria'
-    },
-]
-
-const ActiveUsersList = () => {
+const ActiveUsersList = ({ activeUsers }) => {
     return (
         <div className='active_user_list_container text_main_color'>
             {activeUsers.map((activeUser) =>
@@ -34,4 +16,8 @@ const ActiveUsersList = () => {
     )
 }
 
-export default ActiveUsersList
+const mapStateToProps = ({ dashboard }) => ({
+    ...dashboard
+})
+
+export default connect(mapStateToProps)(ActiveUsersList)

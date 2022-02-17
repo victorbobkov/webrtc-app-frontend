@@ -8,7 +8,7 @@ const UsernameInput = ({username, setUsername}) => {
                 placeholder='Введите имя'
                 type='text'
                 value={username}
-                onChange={(event => setUsername(event.target.value))}
+                onChange={(event => setUsername(event.target.value.trim()))}
                 className='login-page_input background_main_color text_main_color'
             />
         </div>
