@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
-import logo from '../resources/logo.png'
+import { DASHBOARD_SET_USERNAME, setUserName } from '../store/actions/dashboardActions'
+import { registerNewUser } from '../utils/wss-connection/wssConnection'
 import UsernameInput from './UsernameInput'
 import SubmitButton from './SubmitButton'
-import {DASHBOARD_SET_USERNAME, setUserName} from '../store/actions/dashboardActions'
+import logo from '../resources/logo.png'
 import './LoginPage.css'
 
 
@@ -13,8 +14,9 @@ const LoginPage = ({ saveUsername }) => {
 
     const history = useHistory()
     const handleSubmit = () => {
-        history.push('/dashboard')
+        registerNewUser(username)
         saveUsername(username)
+        history.push('/dashboard')
     }
 
     return (
@@ -24,7 +26,7 @@ const LoginPage = ({ saveUsername }) => {
                     <img className='login-page_logo_image' src={logo} alt='logo' />
                 </div>
                 <div className='login-page_title_container'>
-                    <h2 className='text_main_color'>Зайти на сайт</h2>
+                    <h2 className='text_main_color'>Войти на сайт</h2>
                 </div>
                 <UsernameInput username={username} setUsername={setUsername} />
                 <SubmitButton handleSubmit={handleSubmit} />
