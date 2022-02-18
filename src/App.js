@@ -4,7 +4,7 @@ import {
     Route
 } from "react-router-dom";
 import { useEffect } from "react"
-import { connectWithWebSocket } from "./utils/wss-connection/wssConnection"
+import { connectWithWebSocket } from "./utils/wssConnection"
 import Dashboard from "./dashboard/Dashboard";
 import LoginPage from "./loginPage/LoginPage";
 

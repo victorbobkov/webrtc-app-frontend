@@ -1,11 +1,11 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import ActiveUsersListItem from './ActiveUsersListItem'
 import './ActiveUsersList.css'
-import { connect } from "react-redux"
 
 const ActiveUsersList = ({ activeUsers }) => {
     return (
-        <div className='active_user_list_container text_main_color'>
+        <div className="active_user_list_container text_main_color">
             {activeUsers.map((activeUser) =>
                 <ActiveUsersListItem
                     key={activeUser.socketId}
@@ -16,7 +16,7 @@ const ActiveUsersList = ({ activeUsers }) => {
     )
 }
 
-const mapStateToProps = ({ dashboard }) => ({
+const mapStateToProps = ({dashboard}) => ({
     ...dashboard
 })
 
