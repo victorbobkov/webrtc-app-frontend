@@ -1,7 +1,8 @@
 import * as callActions from '../actions/callActions'
 
 const initialState = {
-    localStream: null
+    localStream: null,
+    callState: callActions.callStates.CALL_UNAVAILABLE
 }
 
 const reducer = (state = initialState, action) => {
@@ -10,6 +11,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 localStream: action.localStream
+            }
+        case callActions.CALL_SET_CALL_STATE:
+            return {
+                ...state,
+                callState: action.callState
             }
         default:
             return state
