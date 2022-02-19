@@ -1,5 +1,5 @@
 import React from 'react'
-import userAvatar from '../resources/userAvatar.png'
+import userAvatar from '../../resources/userAvatar.png'
 
 const ActiveUsersListItem = ({ activeUser }) => {
     

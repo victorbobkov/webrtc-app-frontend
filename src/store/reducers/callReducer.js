@@ -1,7 +1,7 @@
 import * as callActions from '../actions/callActions'
 
 const initialState = {
-    localSteam: null
+    localStream: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -9,7 +9,7 @@ const reducer = (state = initialState, action) => {
         case callActions.CALL_SET_LOCAL_STREAM:
             return {
                 ...state,
-                localSteam: action.localSteam
+                localStream: action.localStream
             }
         default:
             return state

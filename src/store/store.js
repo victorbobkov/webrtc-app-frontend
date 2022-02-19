@@ -1,10 +1,10 @@
-import { createStore } from "redux"
+import { createStore } from 'redux'
 import mainReducer from './reducer'
-import { composeWithDevTools } from "redux-devtools-extension"
+import { composeWithDevTools } from 'redux-devtools-extension'
 
 const store = createStore(
-    mainReducer,
-    composeWithDevTools()
+   mainReducer,
+   composeWithDevTools()
 )
 
 export default store

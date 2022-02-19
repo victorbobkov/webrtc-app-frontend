@@ -8,10 +8,10 @@ const defaultConstrains = {
 
 export const getLocalStream = () => {
     navigator.mediaDevices.getUserMedia(defaultConstrains)
-        .then(stream => {
-            store.dispatch(setLocalStream(stream))
-        })
-        .catch(err => {
-            console.log(err)
-        })
+       .then(stream => {
+           store.dispatch(setLocalStream(stream))
+       })
+       .catch(err => {
+           console.log(err)
+       })
 }

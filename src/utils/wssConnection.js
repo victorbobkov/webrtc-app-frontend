@@ -14,7 +14,7 @@ let socket
 export const connectWithWebSocket = () => {
     socket = socketClient(SERVER)
 
-    socket.on('Connection', () => {
+    socket.on('connection', () => {
         console.log('Successfully connected with wss server')
         console.log(socket.id)
     })
@@ -34,7 +34,8 @@ export const registerNewUser = (username) => {
 const handleBroadcastEvents = (data) => {
     switch (data.event) {
         case broadcastEventTypes.ACTIVE_USERS:
-            const activeUsers = data.activeUsers.filter(activeUser => activeUser.socketId !== socket.id)
+            const activeUsers = data.activeUsers
+               .filter(activeUser => activeUser.socketId !== socket.id)
             store.dispatch(dashboardActions.setActiveUsers(activeUsers))
             break
         default:
