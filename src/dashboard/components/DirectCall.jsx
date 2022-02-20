@@ -5,17 +5,18 @@ import RemoveVideoView from './RemoveVideoView'
 import CallRejectedDialog from './CallRejectedDialog'
 import IncomingCallDialog from './IncomingCallDialog'
 import CallingDialog from './CallingDialog'
+import { callStates } from '../../store/actions/callActions'
 
 
-const DirectCall = ({ localStream, remoteStream }) => {
+const DirectCall = ({localStream, remoteStream, callState, callerUsername, callingDialogVisible }) => {
 
    return (
       <>
          <LocalVideoView localStream={localStream} />
          {remoteStream && <RemoveVideoView remoteStream={remoteStream} />}
          {/*<CallRejectedDialog />*/}
-         {/*<IncomingCallDialog />*/}
-         {/*<CallingDialog />*/}
+         {callState === callStates.CALL_REQUESTED && <IncomingCallDialog callerUsername={callerUsername}/>}
+         {callingDialogVisible && <CallingDialog/>}
       </>
    );
 };

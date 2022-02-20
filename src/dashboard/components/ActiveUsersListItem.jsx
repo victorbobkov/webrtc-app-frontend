@@ -1,10 +1,11 @@
 import React from 'react'
 import userAvatar from '../../resources/userAvatar.png'
+import { callToOtherUser } from '../../utils/webRTCHandler'
 
 const ActiveUsersListItem = ({ activeUser }) => {
     
     const handleClick = () => {
-        // call to other user
+        callToOtherUser(activeUser)
     }
     
     return (
