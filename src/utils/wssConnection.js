@@ -37,8 +37,14 @@ export const registerNewUser = (username) => {
     })
 }
 
+// emitting events to server related with direct call
+
 export const sendPreOffer = (data) => {
     socket.emit('pre-offer', data)
+}
+
+export const sendPreOfferAnswer = (data) => {
+    socket.emit('pre-offer-answer', data)
 }
 
 const handleBroadcastEvents = (data) => {
