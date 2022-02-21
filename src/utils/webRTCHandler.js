@@ -9,10 +9,17 @@ import {
 } from '../store/actions/callActions'
 import * as wss from './wssConnection'
 import { sendPreOfferAnswer } from './wssConnection'
+import { configure } from '@testing-library/react'
 
 const defaultConstrains = {
    video: true,
    audio: true
+}
+
+const configuration = {
+   iceServers: [{
+      urls: 'stun:stun.l.google.com:13902'
+   }]
 }
 
 const preOfferAnswers = {
@@ -26,6 +33,7 @@ export const getLocalStream = () => {
       .then(stream => {
          store.dispatch(setLocalStream(stream))
          store.dispatch(setCallState(callStates.CALL_AVAILABLE))
+         createPeerConnection()
       })
       .catch(err => {
          console.log(err)
@@ -33,6 +41,25 @@ export const getLocalStream = () => {
 }
 
 let connectedUserSocketId
+let peerConnection
+
+const createPeerConnection = () => {
+   peerConnection = new RTCPeerConnection(configuration)
+
+   const localStream = store.getState().call.localStream
+
+   for (const track of localStream.getTracks()) {
+      peerConnection.addTrack(track, localStream)
+   }
+
+   peerConnection.ontrack = ({ streams: [stream] }) => {
+      // dispatch remote stream in store
+   }
+
+   peerConnection.onicecandidate = (event) => {
+      // send to connected users ice candidates
+   }
+}
 
 export const callToOtherUser = (calleDetails) => {
    connectedUserSocketId = calleDetails.socketId
@@ -91,6 +118,8 @@ export const handlePreOfferAnswer = (data) => {
          rejected: true,
          reason: rejectionReason
       }))
+
+      resetCallData()
    }
 }
 
