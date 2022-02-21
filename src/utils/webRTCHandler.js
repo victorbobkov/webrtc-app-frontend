@@ -8,8 +8,6 @@ import {
    setLocalStream
 } from '../store/actions/callActions'
 import * as wss from './wssConnection'
-import { sendPreOfferAnswer } from './wssConnection'
-import { configure } from '@testing-library/react'
 
 const defaultConstrains = {
    video: true,
@@ -100,6 +98,15 @@ export const rejectIncomingCallRequest = () => {
    })
 
    resetCallData()
+}
+
+const sendOffer = async () => {
+   const offer = await peerConnection.createOffer()
+   await peerConnection.setLocalDescription(offer)
+   wss.sendWebRTCOffer({
+      calleeSocketId: connectedUserSocketId,
+      offer: offer
+   })
 }
 
 export const handlePreOfferAnswer = (data) => {

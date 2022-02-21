@@ -51,6 +51,10 @@ export const sendPreOfferAnswer = (data) => {
     socket.emit('pre-offer-answer', data)
 }
 
+export const sendWebRTCOffer = (data) => {
+    socket.emit('webRTC-offer', data)
+}
+
 const handleBroadcastEvents = (data) => {
     switch (data.event) {
         case broadcastEventTypes.ACTIVE_USERS:
