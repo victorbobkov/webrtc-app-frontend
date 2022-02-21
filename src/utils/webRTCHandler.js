@@ -1,7 +1,9 @@
 import store from '../store/store'
 import {
-   callStates, setCallerUsername,
+   callStates,
+   setCallerUsername,
    setCallingDialogVisible,
+   setCallRejected,
    setCallState,
    setLocalStream
 } from '../store/actions/callActions'
@@ -74,6 +76,8 @@ export const rejectIncomingCallRequest = () => {
 }
 
 export const handlePreOfferAnswer = (data) => {
+   store.dispatch(setCallingDialogVisible(false))
+
    if (data.answer === preOfferAnswers.CALL_ACCEPTED) {
       // send WebRTC offer
    } else {
@@ -83,6 +87,10 @@ export const handlePreOfferAnswer = (data) => {
       } else {
          rejectionReason = 'Call rejected by the callee'
       }
+      store.dispatch(setCallRejected({
+         rejected: true,
+         reason: rejectionReason
+      }))
    }
 }
 
