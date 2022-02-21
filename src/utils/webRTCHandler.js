@@ -100,20 +100,11 @@ export const rejectIncomingCallRequest = () => {
    resetCallData()
 }
 
-const sendOffer = async () => {
-   const offer = await peerConnection.createOffer()
-   await peerConnection.setLocalDescription(offer)
-   wss.sendWebRTCOffer({
-      calleeSocketId: connectedUserSocketId,
-      offer: offer
-   })
-}
-
 export const handlePreOfferAnswer = (data) => {
    store.dispatch(setCallingDialogVisible(false))
 
    if (data.answer === preOfferAnswers.CALL_ACCEPTED) {
-      // send WebRTC offer
+      sendOffer()
    } else {
       let rejectionReason
       if (data.answer === preOfferAnswers.CALL_NOT_AVAILABLE) {
@@ -128,6 +119,25 @@ export const handlePreOfferAnswer = (data) => {
 
       resetCallData()
    }
+}
+
+const sendOffer = async () => {
+   const offer = await peerConnection.createOffer()
+   await peerConnection.setLocalDescription(offer)
+   wss.sendWebRTCOffer({
+      calleeSocketId: connectedUserSocketId,
+      offer: offer
+   })
+}
+
+export const handleOffer = async (data) => {
+   await peerConnection.setRemoteDescription(data.offer)
+   const answer = await peerConnection.createAnswer()
+   await peerConnection.setLocalDescription(answer)
+   wss.sendWebRTCAnswer({
+      callerSocketId: connectedUserSocketId,
+      answer: answer
+   })
 }
 
 export const checkIfCallIsPossible = () => {
