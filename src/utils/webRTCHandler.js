@@ -5,7 +5,7 @@ import {
    setCallingDialogVisible,
    setCallRejected,
    setCallState,
-   setLocalStream
+   setLocalStream, setRemoteStream
 } from '../store/actions/callActions'
 import * as wss from './wssConnection'
 
@@ -51,15 +51,22 @@ const createPeerConnection = () => {
    }
 
    peerConnection.ontrack = ({ streams: [stream] }) => {
-      // dispatch remote stream in store
+      store.dispatch(setRemoteStream(stream))
    }
 
    peerConnection.onicecandidate = (event) => {
+      console.log('getting candidates from stun server')
       if (event.candidate) {
          wss.sendWebRTCCandidate({
             candidate: event.candidate,
             connectedUserSocketId: connectedUserSocketId
          })
+      }
+   }
+
+   peerConnection.onconnectionstatechange = (event) => {
+      if (peerConnection.connectionState === 'connected') {
+         console.log('Successfully connected with other peer')
       }
    }
 }
@@ -94,6 +101,8 @@ export const acceptIncomingCallRequest = () => {
       callerSocketId: connectedUserSocketId,
       answer: preOfferAnswers.CALL_ACCEPTED
    })
+
+   store.dispatch(setCallState(callStates.CALL_IN_PROGRESS))
 }
 
 export const rejectIncomingCallRequest = () => {
@@ -151,6 +160,7 @@ export const handleAnswer = async (data) => {
 
 export const handleCandidate = async (data) => {
    try {
+      console.log('adding ice candidates')
       await peerConnection.addIceCandidate(data.candidate)
    } catch (e) {
       console.error(e)

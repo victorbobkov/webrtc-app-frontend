@@ -1,4 +1,5 @@
 import * as callActions from '../actions/callActions'
+import { CALL_SET_REMOTE_STREAM } from '../actions/callActions'
 
 const initialState = {
     localStream: null,
@@ -8,7 +9,8 @@ const initialState = {
     callRejected: {
         rejected: false,
         reason: ''
-    }
+    },
+    remoteStream: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -37,6 +39,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 callRejected: action.callRejected
+            }
+        case callActions.CALL_SET_REMOTE_STREAM:
+            return {
+                ...state,
+                remoteStream: action.remoteStream
             }
         default:
             return state
