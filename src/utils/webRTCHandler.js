@@ -5,7 +5,8 @@ import {
    setCallingDialogVisible,
    setCallRejected,
    setCallState,
-   setLocalStream, setRemoteStream
+   setLocalStream,
+   setRemoteStream
 } from '../store/actions/callActions'
 import * as wss from './wssConnection'
 

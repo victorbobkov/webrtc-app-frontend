@@ -1,5 +1,4 @@
 import * as callActions from '../actions/callActions'
-import { CALL_SET_REMOTE_STREAM } from '../actions/callActions'
 
 const initialState = {
     localStream: null,
