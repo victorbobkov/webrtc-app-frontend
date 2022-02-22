@@ -6,7 +6,7 @@ import {
    setCallRejected,
    setCallState,
    setLocalStream,
-   setRemoteStream
+   setRemoteStream, setScreenSharingActive
 } from '../store/actions/callActions'
 import * as wss from './wssConnection'
 
@@ -176,4 +176,29 @@ export const checkIfCallIsPossible = () => {
 export const resetCallData = () => {
    connectedUserSocketId = null
    store.dispatch(setCallState(callStates.CALL_AVAILABLE))
+}
+
+let screenSharingStream
+
+export const switchFroScreenSharing = async () => {
+   if (!store.getState().call.screenSharingActive) {
+      try {
+         screenSharingStream = await navigator.mediaDevices.getDisplayMedia({video: true})
+         store.dispatch(setScreenSharingActive(true))
+         const senders = peerConnection.getSenders()
+         const sender = senders.find(sender => sender.track.kind === screenSharingStream.getVideoTracks()[0].kind)
+         await sender.replaceTrack(screenSharingStream.getVideoTracks()[0])
+      } catch (e) {
+         console.error(e)
+      }
+   } else {
+      const localStream = store.getState().call.localStream
+      const senders = peerConnection.getSenders()
+      const sender = senders.find(sender => sender.track.kind === localStream.getVideoTracks()[0].kind)
+      await sender.replaceTrack(localStream.getVideoTracks()[0])
+      store.dispatch(setScreenSharingActive(false))
+      for (const track of screenSharingStream.getTracks()) {
+         track.stop()
+      }
+   }
 }
