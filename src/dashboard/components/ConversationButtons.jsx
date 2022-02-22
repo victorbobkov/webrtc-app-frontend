@@ -1,14 +1,5 @@
 import React from 'react'
-import {
-   MdCallEnd,
-   MdMic,
-   MdMicOff,
-   MdVideocam,
-   MdVideocamOff,
-   MdVideoCall,
-   MdCamera,
-   MdVideoLabel
-} from 'react-icons/md'
+import { MdCallEnd, MdMic, MdMicOff, MdVideocam, MdVideocamOff, MdVideoLabel } from 'react-icons/md'
 import ConversationButton from './ConversationButton'
 
 const styles = {
@@ -25,17 +16,34 @@ const styles = {
    }
 }
 
-const ConversationButtons = () => {
+const ConversationButtons = ({
+   localStream,
+   localMicrophoneEnabled,
+   localCameraEnabled,
+   setMicrophoneEnabled,
+   setCameraEnabled,
+}) => {
+
+   const handleMicButtonPressed = () => {
+      localStream.getAudioTracks()[0].enabled = !localMicrophoneEnabled
+      setMicrophoneEnabled(!localMicrophoneEnabled)
+   }
+
+   const handleCameraButtonPressed = () => {
+      localStream.getVideoTracks()[0].enabled = !localCameraEnabled
+      setCameraEnabled(!localCameraEnabled)
+   }
+
    return (
       <div style={styles.buttonContainer}>
-         <ConversationButton>
-            <MdMic style={styles.icon} />
+         <ConversationButton onClickHandler={handleMicButtonPressed}>
+            { localMicrophoneEnabled ? <MdMic style={styles.icon} /> : <MdMicOff style={styles.icon} /> }
          </ConversationButton>
          <ConversationButton>
             <MdCallEnd style={styles.icon} />
          </ConversationButton>
-         <ConversationButton>
-            <MdVideocam style={styles.icon} />
+         <ConversationButton onClickHandler={handleCameraButtonPressed}>
+            { localCameraEnabled ? <MdVideocam style={styles.icon} /> : <MdVideocamOff style={styles.icon} /> }
          </ConversationButton>
          <ConversationButton>
             <MdVideoLabel style={styles.icon} />
