@@ -36,6 +36,10 @@ export const connectWithWebSocket = () => {
     socket.on('webRTC-offer', (data) => {
         webRTCHandler.handleOffer(data)
     })
+
+    socket.on('webRTC-answer', (data) => {
+        webRTCHandler.handleAnswer(data)
+    })
 }
 
 export const registerNewUser = (username) => {
@@ -46,7 +50,6 @@ export const registerNewUser = (username) => {
 }
 
 // emitting events to server related with direct call
-
 export const sendPreOffer = (data) => {
     socket.emit('pre-offer', data)
 }

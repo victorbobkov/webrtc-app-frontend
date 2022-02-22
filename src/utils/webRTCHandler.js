@@ -140,6 +140,10 @@ export const handleOffer = async (data) => {
    })
 }
 
+export const handleAnswer = async (data) => {
+   await peerConnection.setRemoteDescription(data.answer)
+}
+
 export const checkIfCallIsPossible = () => {
    return !(store.getState().call.localStream === null ||
       store.getState().call.callState !== callStates.CALL_AVAILABLE)
