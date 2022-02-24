@@ -6,7 +6,8 @@ import {
    setCallRejected,
    setCallState,
    setLocalStream,
-   setRemoteStream, setScreenSharingActive
+   setRemoteStream,
+   setScreenSharingActive
 } from '../store/actions/callActions'
 import * as wss from './wssConnection'
 
@@ -173,11 +174,6 @@ export const checkIfCallIsPossible = () => {
       store.getState().call.callState !== callStates.CALL_AVAILABLE)
 }
 
-export const resetCallData = () => {
-   connectedUserSocketId = null
-   store.dispatch(setCallState(callStates.CALL_AVAILABLE))
-}
-
 let screenSharingStream
 
 export const switchFroScreenSharing = async () => {
@@ -201,4 +197,36 @@ export const switchFroScreenSharing = async () => {
          track.stop()
       }
    }
+}
+
+export const handleUserHangedUp = () => {
+   resetCallDataAfterHangUp()
+}
+
+export const hangUp = () => {
+   wss.sendUserHangedUp({
+      connectedUserSocketId: connectedUserSocketId
+   })
+
+   resetCallDataAfterHangUp()
+}
+
+const resetCallDataAfterHangUp = () => {
+   store.dispatch(setRemoteStream(null))
+
+   peerConnection.close()
+   peerConnection = null
+   createPeerConnection()
+   resetCallData()
+
+   if (store.getState().call.screenSharingActive) {
+      for (const track of screenSharingStream.getTracks()) {
+         track.stop()
+      }
+   }
+}
+
+export const resetCallData = () => {
+   connectedUserSocketId = null
+   store.dispatch(setCallState(callStates.CALL_AVAILABLE))
 }
